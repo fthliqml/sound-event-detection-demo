@@ -14,6 +14,7 @@ export default function Home() {
           alt=""
           fill
           className="object-cover"
+          priority
         />
       </div>
 
@@ -31,6 +32,20 @@ export default function Home() {
           </Link>
         </button>
       </Navbar>
+
+      <section className="relative mx-auto">
+        <div className="container mx-auto">
+          <div className="flex flex-col pt-20 pb-20">
+            <h1 className="text-5xl font-bold mb-5">
+              Sound Event <span className="block">Detection</span>
+            </h1>
+            <p className="max-w-md">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vehicula
+              massa in enim luctus. Rutrum arcu.
+            </p>
+          </div>
+        </div>
+      </section>
     </>
   );
 }

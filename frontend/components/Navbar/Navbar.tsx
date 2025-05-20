@@ -1,6 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
-import NavItem from "@components/Navbar/NavItem";
 
 export default function Navbar({ children }: { children: React.ReactNode }) {
   return (
@@ -13,11 +11,12 @@ export default function Navbar({ children }: { children: React.ReactNode }) {
               className="flex rounded outline-none focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
             >
               <Image
-                className="w-auto h-8"
+                className="w-auto h-auto"
                 width={32}
                 height={32}
                 src="https://d33wubrfki0l68.cloudfront.net/682a555ec15382f2c6e7457ca1ef48d8dbb179ac/f8cd3/images/logo.svg"
                 alt=""
+                priority
               />
             </a>
           </div>
@@ -32,9 +31,9 @@ export default function Navbar({ children }: { children: React.ReactNode }) {
                 stroke="currentColor"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.5"
                   d="M4 6h16M4 12h16M4 18h16"
                 ></path>
               </svg>
