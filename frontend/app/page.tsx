@@ -1,5 +1,3 @@
-"use client";
-
 import Navbar from "@/components/Navbar/Navbar";
 import NavItem from "@/components/Navbar/NavItem";
 import Image from "next/image";
@@ -8,6 +6,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <>
+      {/* Background */}
       <div className="absolute overflow-hidden h-[900px] w-full">
         <Image
           src="/images/grid-pattern.png"
@@ -33,6 +32,7 @@ export default function Home() {
         </button>
       </Navbar>
 
+      {/* Hero Section */}
       <section className="relative mx-auto">
         <div className="container mx-auto">
           <div className="flex flex-col pt-20 pb-20">
