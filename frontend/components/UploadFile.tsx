@@ -1,15 +1,42 @@
 "use client";
 
 import React, { useState } from "react";
-import { FileInput, Label, Button } from "flowbite-react";
+import { FileInput, Label, Button, Spinner } from "flowbite-react";
 import { FaFileVideo } from "react-icons/fa6";
+import axios from "axios";
 
 export default function UploadFile() {
   const [file, setFile] = useState<File | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("video", file);
+
+    try {
+      setIsLoading(true);
+      const res = await axios.post(
+        "http://localhost:8000/api/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("Upload success:", res.data);
+    } catch (error) {
+      console.error("Upload error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -63,8 +90,12 @@ export default function UploadFile() {
         />
       </Label>
 
-      <Button className="w-2xl hover:cursor-pointer" disabled={!file}>
-        Upload
+      <Button
+        className="w-2xl hover:cursor-pointer"
+        disabled={!file || isLoading}
+        onClick={handleUpload}
+      >
+        {isLoading ? <Spinner className="w-6" /> : "Upload"}
       </Button>
     </div>
   );
