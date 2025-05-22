@@ -9,8 +9,6 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
-/.flowbite-react
-.vscode
 
 # testing
 /coverage
