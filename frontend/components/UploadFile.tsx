@@ -24,7 +24,7 @@ export default function UploadFile() {
     try {
       setIsLoading(true);
       const res = await axios.post(
-        "http://localhost:8000/api/upload",
+        "http://localhost:5000/api/upload",
         formData,
         {
           headers: {
