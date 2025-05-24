@@ -14,7 +14,7 @@ export default function TeamSection() {
           <TeamMember
             name="Muhammad Fatihul Iqmal"
             nim="11221065"
-            role="Chief Technology Officer"
+            role="Ketua"
             image="/placeholder.svg?height=300&width=300"
             description="Buen Buen"
             github="https://github.com/fthliqml"
