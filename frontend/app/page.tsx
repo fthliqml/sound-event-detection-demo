@@ -23,7 +23,7 @@ export default function LandingPage() {
 
       <Navbar>
         <NavItem href="#features" label="Features" />
-        <NavItem href="/about" label="Technology" />
+        <NavItem href="#technology" label="Technology" />
         <NavItem href="#use-cases" label="Use Cases" />
         <NavItem href="/TimDevelop" label="About Us" />
         <div className="hidden md:ml-auto md:flex md:items-center md:space-x-8 xl:space-x-10">
