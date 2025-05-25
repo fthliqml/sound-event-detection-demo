@@ -1,5 +1,4 @@
 import os
-import sys
 import argparse
 import numpy as np
 import cv2
@@ -39,17 +38,18 @@ def extract_audio_from_video(video_path, output_audio_path, sample_rate=16000):
     subprocess.run(command, check=True)
     
 def combine_video_audio(video_path, audio_path, output_path):
-    """Gabungkan video tanpa suara dengan audio ke satu file MP4."""
+    """Gabungkan video tanpa suara dengan audio WAV ke satu file MP4 dengan encoding audio ke AAC."""
     command = [
         'ffmpeg',
         '-i', video_path,
         '-i', audio_path,
-        '-c:v', 'copy',      # Copy video tanpa re-encode
+        '-c:v', 'copy',      # Copy video tanpa encode ulang
         '-c:a', 'aac',       # Encode audio ke AAC
+        '-b:a', '192k',      # Bitrate audio
         '-strict', 'experimental',
         '-map', '0:v:0',     # Ambil video dari input 0
         '-map', '1:a:0',     # Ambil audio dari input 1
-        '-y',                # Overwrite
+        '-y',                # Overwrite output
         output_path
     ]
     subprocess.run(command, check=True)
@@ -73,9 +73,9 @@ def add_text_to_video(framewise_output, labels, video_path, out_video_path):
     print('frame_width: {}, frame_height: {}, fps: {}'.format(
         frame_width, frame_height, fps))
 
-    assert fps > 29 and fps <= 30
-    assert frame_width == 1920
-    assert frame_height == 1080
+    assert fps > 20 and fps <= 30
+    assert frame_width > 0
+    assert frame_height > 0
 
     sed_frames_per_video_frame = sed_frames_per_second / float(fps)
 
@@ -95,18 +95,19 @@ def add_text_to_video(framewise_output, labels, video_path, out_video_path):
         if frame is None:
             break
 
-        cv2.rectangle(frame, (0, 0), (900, 450), (255, 255, 255), -1)
+        cv2.rectangle(frame, (0, 0), (int(frame_width*0.8), int(frame_height*0.4)), (255, 255, 255), -1)
 
         for k in range(0, topk):
             # Add text to frames
             font                   = cv2.FONT_HERSHEY_SIMPLEX
-            bottomLeftCornerOfText = (20, 90 + k * 80)
-            fontScale              = 2
+            fontScale = 0.6
+            bottomLeftCornerOfText = (10, 30 + k * 25)
             fontColor              = (0,0,255)
-            lineType               = 3
+            lineType               = 1
  
-            m = int(n * sed_frames_per_video_frame) if int(n * sed_frames_per_video_frame) < 351 else 350
-            print(f"Sorted indexes at m={m}, k={k}: {sorted_indexes[m, k]}")
+            m = int(n * sed_frames_per_video_frame)
+            m = min(m, framewise_output.shape[0] - 1)  # Cegah index out of bounds
+
             text = '{}: {:.3f}'.format(
                 cut_words(labels[sorted_indexes[m, k]]),
                 framewise_output[m, sorted_indexes[m, k]])

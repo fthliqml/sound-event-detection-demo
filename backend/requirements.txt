@@ -1,6 +1,8 @@
 matplotlib
 soundfile==0.10.3.post1
-librosa==0.6.3
+librosa
 torch
 torchlibrosa==0.0.4
 opencv-python
+h5py
+pandas
