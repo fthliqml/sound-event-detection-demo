@@ -6,3 +6,5 @@ torchlibrosa==0.0.4
 opencv-python
 h5py
 pandas
+flask
+flask-cors
