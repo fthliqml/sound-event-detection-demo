@@ -6,24 +6,24 @@ import { useState, useEffect } from "react";
 function ProcessingAnimation() {
   const [progress, setProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
-  
+
   const steps = [
     "Mengunggah file...",
-    "Memuat model AI...", 
+    "Memuat model AI...",
     "Menganalisis audio...",
     "Mendeteksi suara...",
     "Membuat tag audio...",
-    "Menyelesaikan proses..."
+    "Menyelesaikan proses...",
   ];
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setProgress(prev => {
+      setProgress((prev) => {
         const newProgress = prev + Math.random() * 15 + 5;
-        
+
         const stepIndex = Math.floor((newProgress / 100) * steps.length);
         setCurrentStep(Math.min(stepIndex, steps.length - 1));
-        
+
         if (newProgress >= 95) {
           clearInterval(interval);
           return 95;
@@ -33,7 +33,7 @@ function ProcessingAnimation() {
     }, 800 + Math.random() * 400);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [steps.length]);
 
   return (
     <div className="mb-12">
@@ -48,27 +48,29 @@ function ProcessingAnimation() {
           <p className="text-gray-600 mb-6">
             AI kami sedang menganalisis konten audio. Mohon tunggu sebentar...
           </p>
-          
+
           <div className="max-w-md mx-auto">
             <div className="bg-gray-200 rounded-full h-3 mb-4 overflow-hidden">
-              <div 
-                className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-700 ease-out" 
-                style={{width: `${progress}%`}}
+              <div
+                className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-700 ease-out"
+                style={{ width: `${progress}%` }}
               ></div>
             </div>
             <div className="flex justify-between text-sm text-gray-500 mb-4">
-              <span className="transition-all duration-500">{steps[currentStep]}</span>
+              <span className="transition-all duration-500">
+                {steps[currentStep]}
+              </span>
               <span className="font-mono">{Math.round(progress)}%</span>
             </div>
-            
+
             <div className="flex justify-center space-x-2">
               {steps.map((_, index) => (
                 <div
                   key={index}
                   className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    index <= currentStep 
-                      ? 'bg-gradient-to-r from-blue-500 to-purple-500' 
-                      : 'bg-gray-300'
+                    index <= currentStep
+                      ? "bg-gradient-to-r from-blue-500 to-purple-500"
+                      : "bg-gray-300"
                   }`}
                 ></div>
               ))}
@@ -97,10 +99,10 @@ export default function UploadAndShowResult() {
               Pilih file video untuk dianalisis dengan AI kami
             </p>
           </div>
-          
-          <UploadFile 
-            setIsSuccess={setIsSuccess} 
-            file={file} 
+
+          <UploadFile
+            setIsSuccess={setIsSuccess}
+            file={file}
             setFile={setFile}
             setIsProcessing={setIsProcessing}
             isSuccess={isSuccess}
@@ -135,23 +137,23 @@ export default function UploadAndShowResult() {
                   Tonton video Anda dengan tag audio yang dihasilkan AI
                 </p>
               </div>
-              
+
               <div className="relative max-w-3xl mx-auto">
                 <div className="relative bg-black rounded-2xl overflow-hidden shadow-2xl">
                   <video
                     src={`http://localhost:5000/videos/${file?.name}`}
                     controls
                     className="w-full h-auto"
-                    style={{ maxHeight: '500px' }}
+                    style={{ maxHeight: "500px" }}
                   />
-                  
+
                   <div className="absolute top-4 right-4">
                     <div className="bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 text-sm font-semibold text-gray-800">
                       🎵 AI Tagged
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="mt-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
                   <div className="flex items-center justify-between text-sm text-gray-600">
                     <div className="flex items-center">
@@ -159,8 +161,16 @@ export default function UploadAndShowResult() {
                       <span className="font-medium">{file?.name}</span>
                     </div>
                     <div className="flex items-center space-x-4">
-                      <span>Ukuran: {file ? Math.round(file.size / 1024 / 1024 * 100) / 100 : 0} MB</span>
-                      <span className="text-green-500 font-semibold">✓ Diproses</span>
+                      <span>
+                        Ukuran:{" "}
+                        {file
+                          ? Math.round((file.size / 1024 / 1024) * 100) / 100
+                          : 0}{" "}
+                        MB
+                      </span>
+                      <span className="text-green-500 font-semibold">
+                        ✓ Diproses
+                      </span>
                     </div>
                   </div>
                 </div>

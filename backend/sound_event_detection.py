@@ -61,7 +61,6 @@ def combine_video_audio(video_path, audio_path, output_path):
 def add_text_to_video(framewise_output, labels, video_path, out_video_path):
     
     topk = 5    # Number of sound classes to show
-    sed_frames_per_second = 100
 
     # Paths
     os.makedirs(os.path.dirname(out_video_path), exist_ok=True)
@@ -73,9 +72,13 @@ def add_text_to_video(framewise_output, labels, video_path, out_video_path):
     cap = cv2.VideoCapture(video_path)
     frame_width = int(cap.get(3))
     frame_height = int(cap.get(4))
+    frame_count = cap.get(cv2.CAP_PROP_FRAME_COUNT)
     fps = cap.get(cv2.CAP_PROP_FPS)
+    duration = frame_count / fps
     print('frame_width: {}, frame_height: {}, fps: {}'.format(
         frame_width, frame_height, fps))
+
+    sed_frames_per_second = framewise_output.shape[0] / duration
 
     assert fps > 20 and fps <= 30
     assert frame_width > 0
@@ -91,26 +94,24 @@ def add_text_to_video(framewise_output, labels, video_path, out_video_path):
     """(frames_num, topk)"""
 
     n = 0
-    while(True):
-        # Capture frame-by-frame
+    while True:
         ret, frame = cap.read()
-
-        # End of video
         if frame is None:
             break
 
+        current_time_sec = cap.get(cv2.CAP_PROP_POS_MSEC) / 1000.0  # waktu frame video saat ini (detik)
+        m = int(current_time_sec * sed_frames_per_second)
+        m = min(m, framewise_output.shape[0] - 1)
+
+        # gambar rectangle dan teks seperti biasa
         cv2.rectangle(frame, (0, 0), (int(frame_width*0.8), int(frame_height*0.4)), (255, 255, 255), -1)
 
-        for k in range(0, topk):
-            # Add text to frames
+        for k in range(topk):
             font                   = cv2.FONT_HERSHEY_SIMPLEX
             fontScale = 0.6
             bottomLeftCornerOfText = (10, 30 + k * 25)
             fontColor              = (0,0,255)
             lineType               = 1
- 
-            m = int(n * sed_frames_per_video_frame)
-            m = min(m, framewise_output.shape[0] - 1)  # Cegah index out of bounds
 
             text = '{}: {:.3f}'.format(
                 cut_words(labels[sorted_indexes[m, k]]),
@@ -123,7 +124,6 @@ def add_text_to_video(framewise_output, labels, video_path, out_video_path):
                 fontColor,
                 lineType)
 
-        # Write frame to video
         out.write(frame)
 
         n += 1

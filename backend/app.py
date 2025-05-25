@@ -3,6 +3,7 @@ from flask_cors import CORS
 import os
 from werkzeug.utils import secure_filename
 import subprocess
+import shutil
 
 # Setup aplikasi Flask
 app = Flask(__name__)
@@ -20,6 +21,17 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # Fungsi pengecekan ekstensi file
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+  
+def clear_folder(folder_path):
+    for f in os.listdir(folder_path):
+        file_path = os.path.join(folder_path, f)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            raise RuntimeError(f"Gagal menghapus {file_path}: {e}")
 
 VIDEO_DIR = os.path.join(os.getcwd(), 'results')
 
@@ -47,6 +59,13 @@ def upload_file():
 
     if file.filename == '':
         return jsonify({"error": "No selected file"}), 400
+      
+    if file and allowed_file(file.filename):
+        try:
+            clear_folder('results')
+            clear_folder('uploads')
+        except RuntimeError as e:
+            return jsonify({"error": str(e)}), 500
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
