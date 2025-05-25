@@ -1,6 +1,6 @@
 import Navbar from "@/components/Navbar/Navbar";
 import NavItem from "@/components/Navbar/NavItem";
-import UploadFile from "@/components/UploadFile";
+import UploadAndShowResult from "@/components/UploadAndShowResult";
 import Link from "next/link";
 
 export default function Demo() {
@@ -22,7 +22,7 @@ export default function Demo() {
       </Navbar>
 
       <section className="container mx-auto mt-15">
-        <UploadFile />
+        <UploadAndShowResult />
       </section>
     </>
   );

@@ -1,12 +1,19 @@
-"use client";
-
 import React, { useState } from "react";
 import { FileInput, Label, Button, Spinner } from "flowbite-react";
 import { FaFileVideo } from "react-icons/fa6";
 import axios from "axios";
 
-export default function UploadFile() {
-  const [file, setFile] = useState<File | null>(null);
+type UploadFileProps = {
+  file: File | null;
+  setFile: React.Dispatch<React.SetStateAction<File | null>>;
+  setIsSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export default function UploadFile({
+  file,
+  setFile,
+  setIsSuccess,
+}: UploadFileProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,8 +40,10 @@ export default function UploadFile() {
         }
       );
       console.log("Upload success:", res.data);
+      setIsSuccess(true);
     } catch (error) {
       console.error("Upload error:", error);
+      setIsSuccess(false);
     } finally {
       setIsLoading(false);
     }

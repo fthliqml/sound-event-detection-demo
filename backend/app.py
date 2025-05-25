@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory, abort
 from flask_cors import CORS
 import os
 from werkzeug.utils import secure_filename
@@ -20,6 +20,22 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # Fungsi pengecekan ekstensi file
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+VIDEO_DIR = os.path.join(os.getcwd(), 'results')
+
+@app.route('/videos/<basename>')
+def get_video(basename):
+  # Ganti spasi jadi underscore
+  sanitized_basename = basename.replace(' ', '_')
+    
+  filename = f"with_audio_{sanitized_basename}"
+  filepath = os.path.join(VIDEO_DIR, filename)
+  print(filename)
+
+  if not os.path.exists(filepath):
+    return abort(404, description="Video not found")
+
+  return send_from_directory(VIDEO_DIR, filename)
 
 # Endpoint API untuk upload
 @app.route('/api/upload', methods=['POST'])

@@ -18,7 +18,11 @@ def main(args):
     add_text_to_video(framewise_output, labels, args.video_path, args.out_video_path)
     
     # Gabungkan kembali audio asli ke video hasil anotasi
-    final_output_path = args.out_video_path.replace('.mp4', '_with_audio.mp4')
+    basename = os.path.basename(args.out_video_path).replace('.mp4', '').replace('with_text_', '')
+    final_output_path = os.path.join(
+        os.path.dirname(args.out_video_path),
+        f'with_audio_{basename}.mp4'
+    )
     combine_video_audio(args.out_video_path, args.audio_path, final_output_path)
     print(f"[INFO] Final video with audio saved to {final_output_path}")
 
