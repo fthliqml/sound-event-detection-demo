@@ -10,36 +10,42 @@ export default function LandingPage() {
       nim: "11221003",
       photo: "/images/fhiqi.jpg",
       role: "Anggota",
+      instagram: "fhiqi_maulana",
     },
     {
       name: "Muhammad Fatihul Iqmal",
       nim: "11221065",
       photo: "/images/iqmal.jpg",
-      role: "Ketua Kelompok",
+      role: "Ketua",
+      instagram: "fthliqml",
     },
     {
       name: "Nabila Chairunnisa",
       nim: "11221005",
       photo: "/images/nabila.jpg",
       role: "Anggota",
+      instagram: "bilachaa_",
     },
     {
       name: "Ahmad Fakhrurrozi",
       nim: "11221011",
       photo: "/images/oji.jpg",
-      role: "Anggota Beban",
+      role: "Anggota",
+      instagram: "afkhrrz",
     },
     {
       name: "Azhari Rambe",
       nim: "11221019",
       photo: "/images/azhari.jpg",
       role: "Anggota",
+      instagram: "azhari_aozora",
     },
     {
       name: "Dilla Ayu Puspitasari",
       nim: "11221031",
       photo: "/images/dilla.jpg",
       role: "Anggota",
+      instagram: "dillaayu.16",
     },
   ];
 
@@ -77,8 +83,8 @@ export default function LandingPage() {
   const stats = [
     { number: "95%", label: "Akurasi Detection" },
     { number: "< 100ms", label: "Response Time" },
-    { number: "50+", label: "Sound Categories" },
-    { number: "24/7", label: "Real-time Monitor" },
+    { number: "2M+", label: "Dataset" },
+    { number: "500+", label: "Kategori Suara " },
   ];
 
   return (
@@ -384,12 +390,24 @@ export default function LandingPage() {
                     <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors duration-300">
                       {member.name}
                     </h3>
-                    <p className="text-purple-600 font-semibold mb-2 px-3 py-1 bg-purple-100 rounded-full text-sm inline-block">
-                      {member.role}
-                    </p>
-                    <p className="text-gray-500 text-sm font-mono bg-gray-50 px-3 py-1 rounded-full inline-block">
-                      NIM: {member.nim}
-                    </p>
+                    <div>
+                      <p className="text-purple-600 font-semibold mb-2 px-3 py-1 bg-purple-100 rounded-full text-sm inline-block">
+                        {member.role}
+                      </p>
+                      <p className="text-gray-500 text-sm font-mono bg-gray-50 px-3 py-1 rounded-full inline-block">
+                        NIM: {member.nim}
+                      </p>
+                    </div>
+                    <a
+                      href={`https://instagram.com/${member.instagram}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center text-sm font-semibold mt-1"
+                    >
+                      <div className="flex items-center justify-center gap-1 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 bg-clip-text text-transparent">
+                        <span>@{member.instagram}</span>
+                      </div>
+                    </a>
                   </div>
 
                   {/* Decorative elements */}

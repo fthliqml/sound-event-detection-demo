@@ -37,17 +37,17 @@ VIDEO_DIR = os.path.join(os.getcwd(), 'results')
 
 @app.route('/videos/<basename>')
 def get_video(basename):
-  # Ganti spasi jadi underscore
-  sanitized_basename = basename.replace(' ', '_')
-    
-  filename = f"with_audio_{sanitized_basename}"
-  filepath = os.path.join(VIDEO_DIR, filename)
-  print(filename)
+    safe_name = secure_filename(basename)
+    name_wo_ext, _ = os.path.splitext(safe_name)
+  
+    filename = f"with_audio_{name_wo_ext}.mp4"
+    filepath = os.path.join(VIDEO_DIR, filename)
+    print(filename)
 
-  if not os.path.exists(filepath):
-    return abort(404, description="Video not found")
+    if not os.path.exists(filepath):
+      return abort(404, description="Video not found")
 
-  return send_from_directory(VIDEO_DIR, filename)
+    return send_from_directory(VIDEO_DIR, filename)
 
 # Endpoint API untuk upload
 @app.route('/api/upload', methods=['POST'])
